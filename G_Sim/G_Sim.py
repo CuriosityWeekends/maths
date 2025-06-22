@@ -1,6 +1,8 @@
 import time
 import matplotlib.pyplot as plt
 
+# ALL UNITS ARE IN METERS
+
 # Set fps
 fps = 240
 fdelay = 1/fps
@@ -9,7 +11,7 @@ fdelay = 1/fps
 G = -9.8
 g = G*fdelay
 
-yv = 1  # Initial y velocity
+yv = 2  # Initial y velocity (m/s)
 y = 10  # Initial y pos
 yBloss = 0.8    # Amount of Yvelocity that gets refected on bounce (0-1)
 
@@ -19,6 +21,7 @@ xBloss=0.8  # Amount of Xvelocity that remains on bounce (0-1)
 
 xs = []
 ys = []
+
 
 while True:
     px = x
@@ -44,13 +47,22 @@ while True:
     plt.ylabel('Hight')
     plt.title('G sim')
 
+
     plt.legend()
     plt.grid(True)
-    plt.pause(0.0000001)
+
+    if max(xs)>max(ys): # scales the graph so that it is always in a 1:1 ratio
+        xy = max(xs) + 25
+    else:
+        xy = max(ys) + 25
+    plt.xlim(0, xy)
+    plt.ylim(0, xy)
+
+    plt.pause(0.0000001) #draws graph
 
     print(x, y) # prints current x & y pos of the Object
     time.sleep(fdelay) #delay between frames
 
     if x-px < 0.1:  # Sees if speed is less than 10cm/s
-        time.sleep(5)
+        time.sleep(7) #for how long the graph pauses after the Object 'Stops'
         break
