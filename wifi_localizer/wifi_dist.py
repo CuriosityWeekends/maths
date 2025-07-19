@@ -1,16 +1,27 @@
 import subprocess
-import re
+import keyboard
+import time
 
-def get_wifi_strength(interface='wlp0s20f3'):
-    try:
-        result = subprocess.check_output(['iwconfig', interface]).decode()
-        match = re.search(r'Signal level=(-?\d+) dBm', result)
-        if match:
-            signal_level = int(match.group(1))
-            return signal_level
-        else:
-            return None
-    except subprocess.CalledProcessError:
-        return None
+a = []
+
+def list_nearby_wifi():
+
+    result = subprocess.check_output(['nmcli', '-f', 'SSID,SIGNAL', 'dev', 'wifi', 'list']).decode()
+    lines = result.strip().split('\n')
+    lined = lines.pop(0)
+     
+    WifiList = []
+
+    for line in lined:
+        parts = line.strip().split()
+
+        ssid = " ".join(parts[:-1])
+        signal = int(parts[-1])
+        WifiList.append((ssid, signal))
+
+    return WifiList
+
 while True:
-    print("Signal strength (dBm):", abs(get_wifi_strength("wlp0s20f3")))
+    a = list_nearby_wifi()
+    print(a)
+    input()
