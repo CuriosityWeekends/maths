@@ -5,8 +5,11 @@ import numpy as np
 
 a = []
 
-def scan_wifi():
-    subprocess.run(["nmcli", "dev", "wifi", "rescan"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+def scan_wifi(wifi_interface='wlp0s20f3'):
+    # run if config to identify the wifi interface name
+    # run sudo iw dev wlp0s20f3 scan
+    subprocess.run(["sudo", "iw", "dev", wifi_interface, "scan"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    # subprocess.run(["nmcli", "dev", "wifi", "rescan"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
 def list_nearby_wifi():
@@ -42,7 +45,14 @@ def Closeness(wWhereYouAre, wKnown):
     closeness = np.sqrt(closeness)
     return closeness
 
+
+wPrev = list_nearby_wifi()
 while True:
-    a = list_nearby_wifi()
-    print(a)
-    input()
+    scan_wifi()
+    w = list_nearby_wifi()
+    if  w.equals(wPrev): 
+        print("not updated")
+    else:
+        print(w)
+        wPrev = w
+        input()
