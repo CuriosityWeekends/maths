@@ -45,13 +45,41 @@ def Closeness(wWhereYouAre, wKnown):
     closeness = np.sqrt(closeness)
     return closeness
 
-
-wPrev = list_nearby_wifi()
-while True:
+def RecordLocation(wKnownsDict, locationName):
     scan_wifi()
-    w = list_nearby_wifi()
-    if  w.equals(wPrev): 
-        print("not updated")
-    else:
-        print(w)
-        wPrev = w
+    nearbyWifis = list_nearby_wifi()
+    wKnownsDict[locationName] = nearbyWifis
+    return wKnownsDict
+
+
+def Locate(wKnownsDict):
+    scan_wifi()
+    nearbyWifis = list_nearby_wifi()
+    
+    # calculate closeness to each known location
+    closeness = {}
+    for location, wKnown in wKnownsDict.items():
+        closeness[location] = Closeness(nearbyWifis, wKnown)
+    
+    # find the location with the minimum closeness
+    closest_location = min(closeness, key=closeness.get)
+    
+    return closest_location
+
+
+if __name__ == "__main__":
+    # Example usage
+    wKnowns = {}
+    # wKnowns = RecordLocation(wKnowns, "Home")
+    # wKnowns = RecordLocation(wKnowns, "Work")
+    # wKnowns = RecordLocation(wKnowns, "Cafe")
+
+    wPrev = list_nearby_wifi()
+    while True:
+        scan_wifi()
+        w = list_nearby_wifi()
+        if  w.equals(wPrev): 
+            print("not updated")
+        else:
+            print(w)
+            wPrev = w
