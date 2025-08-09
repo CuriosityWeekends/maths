@@ -55,4 +55,3 @@ while True:
     else:
         print(w)
         wPrev = w
-        input()
