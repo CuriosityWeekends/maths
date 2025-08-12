@@ -1,6 +1,7 @@
 > [!NOTE]
 > This covers the theory behind the algorithm
 > The idea is, to look at the min and max distance possible between the different routers
+
 ##O1 (Distance to routers from orgin1)
 R1: 10
 R2: 20
