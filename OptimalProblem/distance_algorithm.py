@@ -16,6 +16,7 @@ def updated_distances(point, distances=distances):
             if dmax < distances[(i, j)][1]:
                 distances[(i, j)][1] = dmax
     return distances
+# Side note, i just noticed that i didn't use the distance_between_routers function from the env
 
 if __name__ == "__main__":
     while True:
