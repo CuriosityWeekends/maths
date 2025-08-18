@@ -17,3 +17,18 @@ def updated_distances(point, distances=distances):
                 distances[(i, j)][1] = dmax
     return distances
 
+if __name__ == "__main__":
+    while True:
+        x = random.randint(-30, 30)
+        y = random.randint(-30, 30)
+        point = np.array([x, y])
+
+        distances = updated_distances(point)
+
+        print(f"## Point: {point}")
+        for (i, j), (dmin, dmax) in distances.items():
+            print(f"R{i+1} --> R{j+1}: `{dmin:.4f} <> {dmax:.4f}`")
+
+        change = input("Continue? (type 'stop' to exit): ")
+        if change.lower() == "stop":
+            break

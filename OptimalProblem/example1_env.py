@@ -10,7 +10,7 @@ def find_distances(point, routers=routers):
     """
     Distances from point to each router.
     """
-    return np.linalg.norm(routers - point)
+    return np.linalg.norm(routers - point, axis=1)
 
 def distance_between_routers(distances: list) -> dict: 
     """
