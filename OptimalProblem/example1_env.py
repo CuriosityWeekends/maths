@@ -12,7 +12,12 @@ def find_distances(point, routers=routers):
     """
     return np.linalg.norm(routers - point)
 
-def distance_between_routers(distances):
+def distance_between_routers(distances: list) -> dict: 
+    """
+    Get min/max distance ranges between routers.
+    distances: array of distances from routers to one another.
+    Returns: dict {(i,j): (dmin, dmax)}
+    """
     n = len(distances)
     results = {}
     for i in range(n):
