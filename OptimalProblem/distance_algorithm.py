@@ -1,30 +1,29 @@
 import random
 import numpy as np
-import example1_env as env
+from example1_env import routers, find_distances, distance_between_routers
 
-n = len(env.routers)
-distances = {(i,j): [0, float("inf")] for i in range(n) for j in range(i+1,n)}
 
-def updated_distances(point, distances=distances):
-    dists = env.find_distances(point)
-    for i in range(n):
-        for j in range(i+1, n):
-            dmin = abs(dists[i] - dists[j])
-            dmax = dists[i] + dists[j]
-            if dmin > distances[(i, j)][0]:
-                distances[(i, j)][0] = dmin
-            if dmax < distances[(i, j)][1]:
-                distances[(i, j)][1] = dmax
+def updated_distances(point, distances=None):
+    dists = find_distances(point)
+    current = distance_between_routers(dists)
+    if distances is None:
+        return current
+    for key in distances:
+        dmin = max(distances[key][0], current[key][0])
+        dmax = min(distances[key][1], current[key][1])
+        distances[key] = (dmin, dmax)
     return distances
 # Side note, i just noticed that i didn't use the distance_between_routers function from the env
+# nvm, i am using it here now lol, and it looks cleaner this way
 
 if __name__ == "__main__":
+    distances = None
     while True:
         x = random.randint(-30, 30)
         y = random.randint(-30, 30)
         point = np.array([x, y])
 
-        distances = updated_distances(point)
+        distances = updated_distances(point, distances)
 
         print(f"## Point: {point}")
         for (i, j), (dmin, dmax) in distances.items():
