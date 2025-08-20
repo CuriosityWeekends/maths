@@ -49,3 +49,22 @@ def plot_heatmap(coverage_dict):
 
     plt.tight_layout()
     plt.show()
+
+if __name__ == "__main__":
+    all_distances = []
+    best_ranges = None
+
+    for _ in range(20000):  # Iteration count
+        x = random.randint(-30, 30)
+        y = random.randint(-30, 30)
+        point = np.array([x, y])
+
+        best_ranges = updated_distances(point, best_ranges)
+        all_distances.append(distance_between_routers(find_distances(point)))
+
+    print("Best ranges found:")
+    for pair, (dmin, dmax) in best_ranges.items():
+        print(f"Routers {pair}: {dmin:.2f} <> {dmax:.2f}")
+
+    
+    plot_heatmap(compute_coverage(all_distances))
