@@ -66,5 +66,5 @@ if __name__ == "__main__":
     for pair, (dmin, dmax) in best_ranges.items():
         print(f"Routers {pair}: {dmin:.2f} <> {dmax:.2f}")
 
-    
-    plot_heatmap(compute_coverage(all_distances))
+    coverage = compute_coverage(all_distances)
+    plot_heatmap(coverage)
