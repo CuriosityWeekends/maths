@@ -21,7 +21,7 @@ def compute_coverage(all_distances, bins=500):
         coverage = np.zeros_like(x_vals)
 
         for dmin, dmax in zip(mins, maxs):
-            coverage += (x_vals >= dmin) & (x_vals <= dmax) # Count coverage in each interval
+            coverage += (x_vals >= dmin) & (x_vals <= dmax) # Counts coverage in each interval
 
         results[pair] = (x_vals, coverage)
 
@@ -54,9 +54,9 @@ if __name__ == "__main__":
     all_distances = []
     best_ranges = None
 
-    for _ in range(20000):  # Iteration count
-        x = random.randint(-30, 30)
-        y = random.randint(-30, 30)
+    for _ in range(100):  # Iteration count
+        x = random.randint(-25, 25)
+        y = random.randint(-25, 25)
         point = np.array([x, y])
 
         best_ranges = updated_distances(point, best_ranges)
@@ -66,5 +66,5 @@ if __name__ == "__main__":
     for pair, (dmin, dmax) in best_ranges.items():
         print(f"Routers {pair}: {dmin:.2f} <> {dmax:.2f}")
 
-    coverage = compute_coverage(all_distances)
+    coverage = compute_coverage(all_distances, bins=5000)
     plot_heatmap(coverage)
