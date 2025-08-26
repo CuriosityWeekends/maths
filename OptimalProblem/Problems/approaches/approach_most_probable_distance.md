@@ -3,6 +3,8 @@
 > **Disclaimer:** This document explains the approach we used.  
 > If you’re reading this, try solving the problem yourself *before* looking at the details below!  
 
+> [!NOTE]
+> This algorith *(in code)* is available in the file `OptimalProblem/mapping_algorithm.py`, in the function `best_distance_from_ranges()`
 ---
 
 ## 1. Overview of the Approach
