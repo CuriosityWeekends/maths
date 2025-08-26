@@ -40,6 +40,40 @@ def get_best_distances(coverage_results):
 
     return best_distances
 
+def best_distance_from_ranges(ranges):
+    pairs = list(ranges[0].keys())
+    results = {}
+
+    for pair in pairs:
+        intervals = [(d[pair][0], d[pair][1]) for d in ranges]
+        changes = []
+        for dmin, dmax in intervals:
+            changes.append((dmin, +1))
+            changes.append((dmax, -1))
+        
+        changes.sort(key=lambda x: (x[0], -x[1]))
+        coverage = 0
+        max_coverage = 0
+        best_segment = None
+        prev_x = None
+
+        for x, change in changes:
+            if prev_x is not None and coverage == max_coverage and coverage > 0:
+                best_segment = (prev_x, x)
+
+            coverage += change
+            prev_x = x
+            if coverage > max_coverage:
+                max_coverage = coverage
+                best_segment = None
+        
+        if best_segment:
+            best_distance = (best_segment[0] + best_segment[1]) / 2
+        else:
+            best_distance = None
+        
+        results[pair] = best_distance
+    return results
 
 def plot_heatmap(coverage_dict):
     pairs = list(coverage_dict.keys())
