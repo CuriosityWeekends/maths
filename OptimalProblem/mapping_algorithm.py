@@ -27,7 +27,7 @@ def compute_coverage(all_distances, bins=500):
 
     return results
 
-def get_best_distances(coverage_results):
+def _best_distances(coverage_results):
     """
     This should find the "brightest" spot in the coverage heatmap.
     """
@@ -113,5 +113,10 @@ if __name__ == "__main__":
     for pair, (dmin, dmax) in best_ranges.items():
         print(f"Routers {pair}: {dmin} <> {dmax}")
 
+    print("Most probable distances:")
+    best_distances = best_distance_from_ranges(all_distances)
+    for pair, distance in best_distances.items():
+        print(f"Routers {pair}: {distance}")
+    
     coverage = compute_coverage(all_distances, bins=50000)
     plot_heatmap(coverage)
