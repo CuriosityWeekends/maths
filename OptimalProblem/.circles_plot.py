@@ -3,7 +3,12 @@ import numpy as np
 import math
 from itertools import cycle
 
-def plot_router_positions(distance_dict, router_labels=None):
+plt.ion()
+fig = plt.figure()
+fig.set_size_inches(12, 10)
+
+def plot_router_positions(distance_dict, router_labels=None, pause_time=0.1):
+    plt.clf()
     def get_distance(node1, node2):
         return distance_dict.get((node1,node2), distance_dict.get((node2,node1), None))
 
@@ -12,19 +17,19 @@ def plot_router_positions(distance_dict, router_labels=None):
                                 linestyle=linestyle, alpha=alpha, linewidth=1.5)
         plt.gca().add_patch(circle)
     
-    def circle_intersections(center1, radius1, center2, radius2, eps=1e-9):
+    def circle_intersections(center1, radius1, center2, radius2, eps=0.1):
         x0, y0 = center1
         x1, y1 = center2
         dx, dy = x1 - x0, y1 - y0
         center_distance = math.hypot(dx, dy)
         if center_distance > radius1 + radius2 + eps or center_distance < abs(radius1 - radius2) - eps or center_distance < eps:
-            return [] # No intersection
+            return []
         a = (radius1**2 - radius2**2 + center_distance**2) / (2 * center_distance)
         h = math.sqrt(max(radius1**2 - a**2, 0))
         xm, ym = x0 + a * dx / center_distance, y0 + a * dy / center_distance
         rx, ry = -dy * h / center_distance, dx * h / center_distance
         pointA, pointB = (xm + rx, ym + ry), (xm - rx, ym - ry)
-        return [pointA] if h < 1e-9 else [pointA, pointB]
+        return [pointA] if h < eps else [pointA, pointB]
 
     def plot_points(points, **kwargs):
         if points:
@@ -36,7 +41,6 @@ def plot_router_positions(distance_dict, router_labels=None):
     placed_nodes = [0,1]
     color_cycle = cycle(['red','green','blue','purple','brown','cyan'])
 
-    plt.figure(figsize=(12,10))
     plt.plot([positions[0][0], positions[1][0]], [positions[0][1], positions[1][1]], 'ko-', label='Baseline')
 
     for node in all_nodes:
@@ -66,7 +70,7 @@ def plot_router_positions(distance_dict, router_labels=None):
 
         consistent_points = [
             pt for pt in candidate_points
-            if all(abs(math.hypot(pt[0]-positions[a][0], pt[1]-positions[a][1]) - get_distance(a, node)) < 1e-3 for a in available_anchors)
+            if all(abs(math.hypot(pt[0]-positions[a][0], pt[1]-positions[a][1]) - get_distance(a, node)) < 1e-1 for a in available_anchors)
         ]
 
         plot_points(candidate_points, color='orange', s=40, alpha=0.6, label='Candidates' if node==2 else "")
@@ -94,8 +98,8 @@ def plot_router_positions(distance_dict, router_labels=None):
     plt.xlabel("X-axis distance")
     plt.ylabel("Y-axis distance")
     plt.legend()
-    plt.show()
-
+    plt.draw()
+    plt.pause(pause_time)
     return positions
 
 if __name__ == "__main__":
@@ -106,4 +110,4 @@ if __name__ == "__main__":
     }
 
     labels = {0:'Server', 1:'RouterA', 2:'RouterB', 3:'RouterC', 4:'RouterD', 5:'RouterE'}
-    positions = plot_router_positions(d, router_labels=labels)
+    positions = plot_router_positions(d, router_labels=labels, pause_time=0)
