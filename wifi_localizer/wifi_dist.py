@@ -2,8 +2,7 @@ import subprocess
 import time
 import pandas as pd
 import numpy as np
-
-a = []
+from mapping_algorithm import  # Runn this from the OptimalProblem directory
 
 def scan_wifi(wifi_interface='wlp0s20f3'):
     # run if config to identify the wifi interface name
@@ -70,7 +69,6 @@ def signal_to_distance(signal_strength, k=1):
     return k * (100 - signal_strength)
 
 def distance_between_wifi_signals(wifi_df: pd.DataFrame, k=1) -> dict:
-
     results = {}
     n = len(wifi_df)
     
@@ -100,6 +98,21 @@ def distance_between_wifi_signals(wifi_df: pd.DataFrame, k=1) -> dict:
     return results
 
 if __name__ == "__main__":
+    all_ranges = []
+    while True:
+        scan_wifi()
+        wifi_list = list_nearby_wifi()
+        print("wifi list:", wifi_list)
+        distances = distance_between_wifi_signals(wifi_list)
+        all_ranges.append(distances)
+        if 's' in input("Press Enter to scan again or type 'stop' to finish: "):
+            break
+    best_distances = best_distance_from_ranges(all_ranges)
+    # Print results
+    for pair, distance in best_distances.items():
+        print(f"{pair}: {distance}")
+
+if __name__ == "__main2__":
     # Example usage
     wKnowns = {}
     # wKnowns = RecordLocation(wKnowns, "Home")
