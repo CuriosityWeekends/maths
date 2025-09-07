@@ -66,6 +66,38 @@ def Locate(wKnownsDict):
     
     return closest_location
 
+def signal_to_distance(signal_strength, k=1):
+    return k * (100 - signal_strength)
+
+def distance_between_wifi_signals(wifi_df: pd.DataFrame, k=1) -> dict:
+
+    results = {}
+    n = len(wifi_df)
+    
+    # Convert all signal strengths to distances first
+    distances = {}
+    for i in range(n):
+        ssid = wifi_df.iloc[i]['ssid']
+        signal = wifi_df.iloc[i]['signal_strength']
+        distance = signal_to_distance(signal, k)
+        distances[ssid] = distance
+    
+    # Calculate min and max ranges for each pair
+    for i in range(n):
+        ssid_i = wifi_df.iloc[i]['ssid']
+        distance_i = distances[ssid_i]
+        
+        for j in range(i + 1, n):
+            ssid_j = wifi_df.iloc[j]['ssid']
+            distance_j = distances[ssid_j]
+            
+            dmin = abs(distance_i - distance_j)
+            dmax = distance_i + distance_j
+            
+            key = tuple(sorted((ssid_i, ssid_j)))
+            results[key] = (dmin, dmax)
+    
+    return results
 
 if __name__ == "__main__":
     # Example usage
