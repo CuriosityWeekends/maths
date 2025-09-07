@@ -1,9 +1,13 @@
 import numpy as np
 
 routers = np.array([
-    [0, 10],
+    [0, 0],
     [20, 0],
+    [0, 10],
+    [5, 15],
     [25, 0],
+    [-10, 0],
+    [-20, 0]
 ]) #Since we have only 3 routers, we can use a fixed array (for simplicity)
 
 def find_distances(point, routers=routers):
