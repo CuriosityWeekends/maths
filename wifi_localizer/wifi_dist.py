@@ -111,8 +111,7 @@ if __name__ == "__main__":
     # Print results
     for pair, distance in best_distances.items():
         print(f"{pair}: {distance}")
-'''
-[{('--', 'AUAS'): (63.0, 73.0),
+sc = [{('--', 'AUAS'): (63.0, 73.0),
   ('--', 'Curiosity Weefi'): (1.0, 9.0),
   ('--', 'JioAirfiberA6'): (60.0, 70.0),
   ('--', 'KFON@Wi-Fi'): (41.0, 51.0),
@@ -2975,7 +2974,7 @@ if __name__ == "__main__":
   ('KFON@Wi-Fi', 'LINNK-4G'): (10.0, 126.0),
   ('KFON@Wi-Fi', 'SpookyActionAtADistance?'): (68.0, 68.0),
   ('LINNK-4G', 'SpookyActionAtADistance?'): (58.0, 58.0)}]
-  '''
+'''
 if __name__ == "__main2__":
     # Example usage
     wKnowns = {}
@@ -2992,3 +2991,4 @@ if __name__ == "__main2__":
         else:
             print(w)
             wPrev = w
+'''

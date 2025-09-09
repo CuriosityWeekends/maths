@@ -41,11 +41,18 @@ def _best_distances(coverage_results):
     return best_distances
 
 def best_distance_from_ranges(ranges):
-    pairs = list(ranges[0].keys())
+    all_pairs = set()
+    for scan in ranges:
+        all_pairs.update(scan.keys())
+    pairs = list(all_pairs)
     results = {}
 
     for pair in pairs:
-        intervals = [(d[pair][0], d[pair][1]) for d in ranges]
+        intervals = [d[pair] for d in ranges if pair in d]
+        if not intervals:
+            results[pair] = None
+            continue
+        
         changes = []
         for dmin, dmax in intervals:
             changes.append((dmin, +1))
