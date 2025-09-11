@@ -3,6 +3,7 @@ import time
 import pandas as pd
 import numpy as np
 from mapping_algorithm import best_distance_from_ranges #Runn this from the OptimalProblem directory
+from mds_plot import plot_from_distance_matrix, compute_full_distance_matrix
 
 def scan_wifi(wifi_interface='wlp3s0'):
     # run if config to identify the wifi interface name
@@ -97,7 +98,7 @@ def distance_between_wifi_signals(wifi_df: pd.DataFrame, k=1) -> dict:
     
     return results
 
-def distaance_matrix(data):
+def distance_matrix(data):
     labels = sorted(set([k for pair in data.keys() for k in pair]))
     n = len(labels)
     dist_matrix = np.zeros((n, n))
@@ -123,6 +124,8 @@ if __name__ == "__main__":
     # Print results
     for pair, distance in best_distances.items():
         print(f"{pair}: {distance}")
+    labels, dist_matrix = distaance_matrix(best_distances)
+    plot_from_distance_matrix(compute_full_distance_matrix(dist_matrix), labels)
     
 sc = [{('--', 'AUAS'): (63.0, 73.0),
   ('--', 'Curiosity Weefi'): (1.0, 9.0),
