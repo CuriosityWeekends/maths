@@ -97,6 +97,18 @@ def distance_between_wifi_signals(wifi_df: pd.DataFrame, k=1) -> dict:
     
     return results
 
+def distaance_matrix(data):
+    labels = sorted(set([k for pair in data.keys() for k in pair]))
+    n = len(labels)
+    dist_matrix = np.zeros((n, n))
+
+    for (a, b), d in data.items():
+        i, j = labels.index(a), labels.index(b)
+        dist_matrix[i, j] = d
+        dist_matrix[j, i] = d # For symmetry
+
+    return labels, dist_matrix
+
 if __name__ == "__main__":
     all_ranges = []
     while True:
@@ -111,6 +123,7 @@ if __name__ == "__main__":
     # Print results
     for pair, distance in best_distances.items():
         print(f"{pair}: {distance}")
+    
 sc = [{('--', 'AUAS'): (63.0, 73.0),
   ('--', 'Curiosity Weefi'): (1.0, 9.0),
   ('--', 'JioAirfiberA6'): (60.0, 70.0),
