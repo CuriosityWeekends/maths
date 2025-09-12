@@ -69,18 +69,23 @@ def Locate(wKnownsDict):
 def signal_to_distance(signal_strength, k=1):
     return k * (100 - signal_strength)
 
-def distance_between_wifi_signals(wifi_df: pd.DataFrame, k=1) -> dict:
-    results = {}
+def signal_to_disntace(wifi_df: pd.DataFrame, k=1) -> dict: # Also converts to dict
     n = len(wifi_df)
-    
-    # Convert all signal strengths to distances first
     distances = {}
     for i in range(n):
         ssid = wifi_df.iloc[i]['ssid']
         signal = wifi_df.iloc[i]['signal_strength']
         distance = signal_to_distance(signal, k)
         distances[ssid] = distance
-    
+    return distances
+
+def distance_between_wifi_signals(distances=None,wifi_df: pd.DataFrame=None, k=1) -> dict:
+    results = {}
+    if distances is None:
+        n = len(wifi_df)
+        distances = signal_to_disntace(wifi_df, k)
+    else:
+        n = len(distances)
     # Calculate min and max ranges for each pair
     for i in range(n):
         ssid_i = wifi_df.iloc[i]['ssid']
@@ -126,6 +131,7 @@ if __name__ == "__main__":
         print(f"{pair}: {distance}")
     labels, dist_matrix = distance_matrix(best_distances)
     plot_from_distance_matrix(compute_full_distance_matrix(dist_matrix), labels)
+
     
 sc = [{('--', 'AUAS'): (63.0, 73.0),
   ('--', 'Curiosity Weefi'): (1.0, 9.0),
