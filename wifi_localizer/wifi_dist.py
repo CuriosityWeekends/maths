@@ -12,9 +12,9 @@ def scan_wifi(wifi_interface='wlp3s0'):
     # subprocess.run(["nmcli", "dev", "wifi", "rescan"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
-def list_nearby_wifi():
+def list_nearby_wifi(include: list[str]=[]):
 
-    result = subprocess.check_output(['nmcli', '-f', 'SSID,SIGNAL', 'dev', 'wifi', 'list']).decode()
+    result = subprocess.check_output(['nmcli', '-f', f'SSID,{','.join(include)},SIGNAL', 'dev', 'wifi', 'list']).decode()
     lines = result.strip().split('\n')
     lines.pop(0)
      
@@ -114,7 +114,7 @@ if __name__ == "__main__":
     all_ranges = []
     while True:
         scan_wifi()
-        wifi_list = list_nearby_wifi()
+        wifi_list = list_nearby_wifi(include=['FREQ'])
         print("wifi list:", wifi_list)
         distances = distance_between_wifi_signals(wifi_list)
         all_ranges.append(distances)
