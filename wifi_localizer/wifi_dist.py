@@ -124,7 +124,7 @@ if __name__ == "__main__":
     # Print results
     for pair, distance in best_distances.items():
         print(f"{pair}: {distance}")
-    labels, dist_matrix = distaance_matrix(best_distances)
+    labels, dist_matrix = distance_matrix(best_distances)
     plot_from_distance_matrix(compute_full_distance_matrix(dist_matrix), labels)
     
 sc = [{('--', 'AUAS'): (63.0, 73.0),
