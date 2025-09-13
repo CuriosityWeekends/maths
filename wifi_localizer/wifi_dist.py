@@ -135,10 +135,12 @@ if __name__ == "__main__":
         distances = distance_between_wifi_signals(distances=distances)
         all_ranges.append(distances)
 
-    best_distances = best_distance_from_ranges(all_ranges)
+    best_distances, uncertanity = best_distance_from_ranges(all_ranges)
     # Print results
     for pair, distance in best_distances.items():
-        print(f"{pair}: {distance}")
+        print(f"{pair}: {distance}; Uncertanity: ±{uncertanity[pair]}")
+        # We could implement a threshold here to remove uncertain distances
+    
     labels, dist_matrix = distance_matrix(best_distances)
     plot_from_distance_matrix(compute_full_distance_matrix(dist_matrix), labels)
 

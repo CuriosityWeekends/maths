@@ -14,8 +14,8 @@ def compute_coverage(all_distances, bins=500):
     results = {}
 
     for pair in pairs:
-        mins = [d[pair][0] for d in all_distances]
-        maxs = [d[pair][1] for d in all_distances]
+        mins = [d[pair][0] for d in all_distances if pair in d]
+        maxs = [d[pair][1] for d in all_distances if pair in d]
 
         x_vals = np.linspace(min(mins), max(maxs), bins) # Empty array of x values
         coverage = np.zeros_like(x_vals)
@@ -46,11 +46,13 @@ def best_distance_from_ranges(ranges):
         all_pairs.update(scan.keys())
     pairs = list(all_pairs)
     results = {}
+    uncertanity = {}
 
     for pair in pairs:
         intervals = [d[pair] for d in ranges if pair in d]
         if not intervals:
             results[pair] = None
+            uncertanity[pair] = None
             continue
         
         changes = []
@@ -76,11 +78,12 @@ def best_distance_from_ranges(ranges):
         
         if best_segment:
             best_distance = (best_segment[0] + best_segment[1]) / 2
+            uncertanity[pair] = (best_segment[1] - best_segment[0]) / 2
         else:
             best_distance = None
         
         results[pair] = best_distance
-    return results
+    return results, uncertanity
 
 def plot_heatmap(coverage_dict):
     pairs = list(coverage_dict.keys())
