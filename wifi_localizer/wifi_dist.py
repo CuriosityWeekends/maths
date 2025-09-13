@@ -131,7 +131,7 @@ if __name__ == "__main__":
         print("wifi list:", wifi_list)
         distances = signal_to_distance_dict(wifi_list, k=1) # Distances to routers from orgin
         if pointName != '':
-            all_ranges.append({(pointName, key): value for key, value in distances.items()})
+            all_ranges.append({(pointName, key): (value, value) for key, value in distances.items()})
         distances = distance_between_wifi_signals(distances=distances)
         all_ranges.append(distances)
 
