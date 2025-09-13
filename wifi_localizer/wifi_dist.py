@@ -69,7 +69,7 @@ def Locate(wKnownsDict):
 def signal_to_distance(signal_strength, k=1):
     return k * (100 - signal_strength)
 
-def signal_to_disntace(wifi_df: pd.DataFrame, k=1) -> dict: # Also converts to dict
+def signal_to_distance_dict(wifi_df: pd.DataFrame, k=1) -> dict: # Also converts to dict
     n = len(wifi_df)
     distances = {}
     for i in range(n):
@@ -82,10 +82,15 @@ def signal_to_disntace(wifi_df: pd.DataFrame, k=1) -> dict: # Also converts to d
 def distance_between_wifi_signals(distances=None,wifi_df: pd.DataFrame=None, k=1) -> dict:
     results = {}
     if distances is None:
+        if wifi_df is None:
+            raise ValueError("wifi_df must be provided if distances is None")
         n = len(wifi_df)
-        distances = signal_to_disntace(wifi_df, k)
+        distances = signal_to_distance_dict(wifi_df, k)
     else:
         n = len(distances)
+        if wifi_df is None:
+            wifi_df = pd.DataFrame({'ssid': list(distances.keys())})
+    
     # Calculate min and max ranges for each pair
     for i in range(n):
         ssid_i = wifi_df.iloc[i]['ssid']
@@ -118,13 +123,18 @@ def distance_matrix(data):
 if __name__ == "__main__":
     all_ranges = []
     while True:
+        pointName = input("Enter Location Name to scan or type 'stop' to finish: ")
+        if 'stop' in pointName.lower():
+            break
         scan_wifi()
         wifi_list = list_nearby_wifi(include=['FREQ'])
         print("wifi list:", wifi_list)
-        distances = distance_between_wifi_signals(wifi_list)
+        distances = signal_to_distance_dict(wifi_list, k=1) # Distances to routers from orgin
+        if pointName != '':
+            all_ranges.append({(pointName, key): value for key, value in distances.items()})
+        distances = distance_between_wifi_signals(distances=distances)
         all_ranges.append(distances)
-        if 's' in input("Press Enter to scan again or type 'stop' to finish: "):
-            break
+
     best_distances = best_distance_from_ranges(all_ranges)
     # Print results
     for pair, distance in best_distances.items():
