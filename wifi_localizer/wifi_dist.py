@@ -138,8 +138,11 @@ if __name__ == "__main__":
     best_distances, uncertanity = best_distance_from_ranges(all_ranges)
     # Print results
     for pair, distance in best_distances.items():
-        print(f"{pair}: {distance}; Uncertanity: ±{uncertanity[pair]}")
+        #print(f"{pair}: {distance}; Uncertanity: ±{uncertanity[pair]}")
         # We could implement a threshold here to remove uncertain distances
+        #For example
+        if uncertanity[pair] < 20:
+            print(f"Accepted {pair} with distance {distance} ±{uncertanity[pair]}")
     
     labels, dist_matrix = distance_matrix(best_distances)
     plot_from_distance_matrix(compute_full_distance_matrix(dist_matrix), labels)
