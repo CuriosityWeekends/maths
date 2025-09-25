@@ -127,7 +127,7 @@ if __name__ == "__main__":
         if 'stop' in pointName.lower():
             break
         scan_wifi()
-        wifi_list = list_nearby_wifi(include=['FREQ'])
+        wifi_list = list_nearby_wifi()
         print("wifi list:", wifi_list)
         distances = signal_to_distance_dict(wifi_list, k=1) # Distances to routers from orgin
         if pointName != '':
