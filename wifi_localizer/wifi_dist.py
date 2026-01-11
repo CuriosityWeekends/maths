@@ -1,12 +1,18 @@
+from matplotlib import pyplot as plt
 import subprocess
 import time
 import pandas as pd
 import numpy as np
 from mapping_algorithm import best_distance_from_ranges #Runn this from the OptimalProblem directory
 from mds_plot import plot_from_distance_matrix, compute_full_distance_matrix
+# from sklearn.manifold import MDS
+
+plt.ion()
 
 # decclare a constant for max distance
 constDistMax = 202
+
+
 
 def scan_wifi(wifi_interface='wlp3s0'):
     # run if config to identify the wifi interface name
@@ -152,8 +158,8 @@ def DiffsAndSums(distances, namesOrder, distDiffs, distSums):
         if ssid_i not in distances:
             continue
         dist_i = distances[ssid_i]
-        # for j in range(i + 1, n):
-        for j in range(i + 0, n):
+        for j in range(i + 1, n):
+        # for j in range(i + 0, n):
             ssid_j = namesOrder[j]
             if ssid_j not in distances:
                 continue
@@ -229,7 +235,7 @@ if __name__ == "__main__":
         # dfDistDiff.index = namesOrder
         # dfDistDiff.columns = namesOrder
 
-
+        plot_from_distance_matrix(distMeans, labels=namesOrder)
     
         # print(np.round(dfDistDiff),0)
         print("===============")
@@ -272,7 +278,7 @@ if __name__ == "__main__ ":
     
     labels, dist_matrix = distance_matrix(best_distances)
     plot_from_distance_matrix(compute_full_distance_matrix(dist_matrix), labels)
-
+    plt.pause(0.1)
     
 '''
 if __name__ == "__main2__":

@@ -5,11 +5,17 @@ from sklearn.manifold import MDS
 from adjustText import adjust_text
 from scipy.spatial import distance_matrix as DM
 
+plt.ion()
+plt.figure(figsize=(8, 6))
+plt.title("MDS Plot with Adjusted Labels")
+plt.grid(True)
+
 def plot_from_distance_matrix(distance_matrix, labels=None):
+    plt.clf()
     mds = MDS(dissimilarity="precomputed", random_state=8)
     coords = mds.fit_transform(distance_matrix)
 
-    plt.figure(figsize=(8, 6))
+    # plt.figure(figsize=(8, 6))
     plt.scatter(coords[:, 0], coords[:, 1], s=80, c='skyblue', edgecolors='k')
 
     texts = []
@@ -20,9 +26,8 @@ def plot_from_distance_matrix(distance_matrix, labels=None):
             texts.append(plt.text(x, y, str(i), fontsize=10))
 
     adjust_text(texts, arrowprops=dict(arrowstyle="->", color='gray'))
-    plt.title("MDS Plot with Adjusted Labels")
-    plt.grid(True)
-    plt.show()
+    plt.pause(0.1)
+    # plt.show()
 
     #euclid_dists = DM(coords, coords)
     #print("Pairwise distances between points after MDS:")
