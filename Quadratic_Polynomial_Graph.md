@@ -24,8 +24,8 @@ x = np.linspace(-5, 5, 200)
 y = x**2 - 4
 
 plt.plot(x, y, 'g')
-plt.axhline(0)   # x-axis
-plt.axvline(0)   # y-axis
+plt.axhline(0)   
+plt.axvline(0)   
 plt.grid(True)
 plt.xlabel("X")
 plt.ylabel("Y")
@@ -48,4 +48,4 @@ Plotting the polynomial using Python helps in understanding the concept visually
 
 ---
 
-**Day 3 – Python + Maths Streak ✔**
+**Day 3 – Python + Maths Streak**
